@@ -24,8 +24,8 @@ DATA ASSUMPTION: ToolConfig mock uses default-like values matching
     the ToolConfig dataclass structure.
 
 DATA ASSUMPTION: The stub's main() resolves project_dir as
-    Path(__file__).resolve().parent.parent.parent, so __file__
-    is patched to <tmp_path>/a/b/stub.py to get tmp_path as
+    Path(__file__).resolve().parent.parent.parent.parent, so __file__
+    is patched to <tmp_path>/a/b/c/stub.py to get tmp_path as
     the resolved project directory.
 
 DATA ASSUMPTION: Ontology path uses cherry_pick_categories from
@@ -141,8 +141,8 @@ def _setup_main_env(tmp_path, monkeypatch, mapping_file_arg=None):
 
     (tmp_path / "data").mkdir(exist_ok=True)
 
-    # __file__ -> tmp_path/a/b/stub.py so project_dir = tmp_path
-    nested = tmp_path / "a" / "b"
+    # __file__ -> tmp_path/a/b/c/stub.py so project_dir = tmp_path
+    nested = tmp_path / "a" / "b" / "c"
     nested.mkdir(parents=True, exist_ok=True)
     monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
 
@@ -541,7 +541,7 @@ class TestMainExitOnError:
     def test_missing_data_dir_exits_code_1(self, tmp_path, monkeypatch):
         """main exits with code 1 when data/ directory is missing."""
         import gsea_tool.scripts.svp_launcher as stub_module
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])
@@ -553,7 +553,7 @@ class TestMainExitOnError:
     def test_missing_data_dir_prints_to_stderr(self, tmp_path, monkeypatch, capsys):
         """main prints a descriptive error to stderr when data/ is missing."""
         import gsea_tool.scripts.svp_launcher as stub_module
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])
@@ -668,7 +668,7 @@ class TestMainExitOnError:
     def test_nonexistent_mapping_file_cli_arg_exits_code_1(self, tmp_path, monkeypatch):
         """Contract 12: main exits 1 when CLI mapping file does not exist."""
         import gsea_tool.scripts.svp_launcher as stub_module
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         (tmp_path / "data").mkdir()
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))

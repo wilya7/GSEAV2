@@ -145,9 +145,9 @@ def _setup_main_patches(tmp_path, monkeypatch, mapping_file_arg=None, clustering
     (tmp_path / "data").mkdir(exist_ok=True)
 
     # Patch __file__ so project_dir resolves to tmp_path
-    # The implementation does: Path(__file__).resolve().parent.parent.parent
-    # So we need __file__ to be at tmp_path/a/b/stub.py to get tmp_path
-    nested = tmp_path / "a" / "b"
+    # The implementation does: Path(__file__).resolve().parent.parent.parent.parent
+    # So we need __file__ to be at tmp_path/a/b/c/stub.py to get tmp_path
+    nested = tmp_path / "a" / "b" / "c"
     nested.mkdir(parents=True, exist_ok=True)
     monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
 
@@ -282,7 +282,7 @@ class TestContract7ConfigLoadedFirst:
         """When load_config raises, main exits with code 1."""
         import gsea_tool.scripts.svp_launcher as stub_module
         (tmp_path / "data").mkdir()
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])
@@ -298,7 +298,7 @@ class TestContract7ConfigLoadedFirst:
         """When load_config raises, error message goes to stderr."""
         import gsea_tool.scripts.svp_launcher as stub_module
         (tmp_path / "data").mkdir()
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])
@@ -316,7 +316,7 @@ class TestContract7ConfigLoadedFirst:
         """When load_config raises, ingest_data is never called (halts before processing)."""
         import gsea_tool.scripts.svp_launcher as stub_module
         (tmp_path / "data").mkdir()
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])
@@ -343,7 +343,7 @@ class TestContract8DataIngestionFailure:
         """When ingest_data raises, main exits with code 1."""
         import gsea_tool.scripts.svp_launcher as stub_module
         (tmp_path / "data").mkdir()
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])
@@ -364,7 +364,7 @@ class TestContract8DataIngestionFailure:
         """When ingest_data raises, error message goes to stderr."""
         import gsea_tool.scripts.svp_launcher as stub_module
         (tmp_path / "data").mkdir()
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])
@@ -705,7 +705,7 @@ class TestContract12AnyUnitError:
     def test_mapping_file_cli_arg_nonexistent_exits_code_1(self, tmp_path, monkeypatch):
         """Contract 12: main exits 1 when CLI mapping file does not exist."""
         import gsea_tool.scripts.svp_launcher as stub_module
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         (tmp_path / "data").mkdir()
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
@@ -925,7 +925,7 @@ class TestContract3ProjectDirResolution:
         """main() passes the project_dir derived from __file__ to resolve_paths."""
         import gsea_tool.scripts.svp_launcher as stub_module
         (tmp_path / "data").mkdir()
-        nested = tmp_path / "a" / "b"
+        nested = tmp_path / "a" / "b" / "c"
         nested.mkdir(parents=True, exist_ok=True)
         monkeypatch.setattr(stub_module, "__file__", str(nested / "stub.py"))
         monkeypatch.setattr(sys, "argv", ["stub.py"])

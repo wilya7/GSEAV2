@@ -91,8 +91,9 @@ def _run() -> None:
     parser = build_argument_parser()
     args = parser.parse_args()
 
-    # Resolve project directory as the directory containing this script
-    project_dir = Path(__file__).resolve().parent.parent.parent
+    # Resolve project directory: __file__ is src/gsea_tool/scripts/svp_launcher.py
+    # .parent x4 = scripts -> gsea_tool -> src -> project root
+    project_dir = Path(__file__).resolve().parent.parent.parent.parent
 
     # Resolve paths
     data_dir, output_dir, cache_dir, mapping_path = resolve_paths(
