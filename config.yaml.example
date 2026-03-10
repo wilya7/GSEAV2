@@ -1,0 +1,47 @@
+# GSEA Tool Configuration
+# Copy this file to config.yaml and edit as needed.
+# All sections and keys are optional -- defaults are shown below.
+
+# Cherry-pick categories for Figure 1 (ontology-based resolution).
+# Each entry needs a GO term ID and a human-readable label.
+# If provided, the tool resolves descendant GO terms from the OBO ontology.
+# Alternatively, pass a mapping TSV file as a CLI argument.
+# cherry_pick:
+#   - go_id: "GO:0008150"
+#     label: "biological_process"
+#   - go_id: "GO:0009987"
+#     label: "cellular_process"
+
+# Dot plot settings (Figures 1 and 2)
+dot_plot:
+  fdr_threshold: 0.05        # FDR significance threshold
+  top_n: 20                  # Number of top GO terms to select
+  n_groups: 4                # Number of groups for unbiased term selection
+  random_seed: 42            # Random seed for reproducibility
+
+# Fisher's combined probability test (meta-analysis)
+fisher:
+  pseudocount: 1.0e-10       # Pseudocount added to avoid log(0)
+  apply_fdr: false            # Apply BH-FDR correction to combined p-values
+  fdr_threshold: 0.25         # FDR threshold (only used when apply_fdr is true)
+  prefilter_pvalue: 0.05      # Pre-filter threshold for clustering input
+  top_n_bars: 20              # Number of bars in Figure 3
+
+# GO semantic similarity clustering
+clustering:
+  enabled: true                                                          # Set to false to skip clustering
+  similarity_metric: "Lin"                                               # Similarity metric (Lin)
+  similarity_threshold: 0.7                                              # Threshold for clustering
+  go_obo_url: "https://current.geneontology.org/ontology/go-basic.obo"  # GO ontology OBO file URL
+  # gaf_url: ""                                                          # GAF annotation file URL (defaults to Drosophila)
+
+# Plot appearance (all figures)
+plot:
+  dpi: 300                    # Output resolution
+  font_family: "Arial"        # Font family for labels
+  bar_colormap: "YlOrRd"      # Colormap for Figure 3 bars
+  bar_figure_width: 10.0      # Figure 3 width in inches
+  bar_figure_height: 8.0      # Figure 3 height in inches
+  label_max_length: 60         # Max characters for GO term labels
+  show_significance_line: true # Show significance threshold line on Figure 3
+  show_recurrence_annotation: true  # Show recurrence annotations on Figure 3
